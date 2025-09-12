@@ -38,9 +38,9 @@ const unsigned int SCR_WIDTH = 1920;
 const unsigned int SCR_HEIGHT = 1080;
 
 // camera
-//Camera camera(glm::vec3(0.868368f, 3.01393f, 3.93507f), glm::vec3(-0.173054f, 0.805921f, -0.566166f), -107.4f, -36.3f);
+Camera camera(glm::vec3(2.10089f, 1.39742f, 1.18186f), glm::vec3(-0.273175f, 0.949972f, -0.151423f), -151.0f, -18.2f);
 
-Camera camera;
+//Camera camera;
 
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
@@ -108,7 +108,8 @@ bool show_sphere = true;
 float sphere_scale = 0.15;
 float sphere_alpha = 0.7;
 //glm::vec4 sphereColor = glm::vec4(0.87f, 0.67f, 0.41f, 0.5f);
-static float sphereColor[4] = { 0.87f,0.67f,0.41f,0.5f };
+//static float sphereColor[4] = { 0.87f,0.67f,0.41f,0.5f };
+static float sphereColor[4] = { 1.0f,1.0f,0.0f,0.5f };
 
 
 //gaze behavior unit
@@ -771,6 +772,46 @@ int main()
 			}
 
 
+			//show if being looked
+			//p1 looking p2 or not
+
+			int looker_1 = (i + 1) % 3;
+			int looker_2 = (i + 2) % 3;
+
+			auto U = glm::normalize(glm::vec3(gazeEnds[looker_1] - pupilPositions[looker_1]));
+
+			auto Q = glm::vec3(pupilPositions[looker_1] - spherePositions[i]);
+			auto b = 2.0f * glm::dot(U, Q);
+			auto c = glm::dot(Q, Q) - sphere_scale * sphere_scale*4;
+			auto d = b * b - 4.0f * c;
+			bool bLooked = false;
+
+			//cout << d << ", ";
+
+			if (d >= 0) {
+				bLooked = true;
+			}
+			//if (d >= 0)
+			//	cout << "Looking!!" << endl;
+			//else
+			//	cout << "Not looking" << endl;
+
+
+			U = glm::normalize(glm::vec3(gazeEnds[looker_2] - pupilPositions[looker_2]));
+
+			Q = glm::vec3(pupilPositions[looker_2] - spherePositions[i]);
+			b = 2.0f * glm::dot(U, Q);
+			c = glm::dot(Q, Q) - sphere_scale * sphere_scale*4;
+			d = b * b - 4.0f * c;
+
+
+			//cout << d << ", ";
+
+			if (d >= 0) {
+				bLooked = true;
+			}
+
+
 			//draw sphere around head
 			if (show_sphere)
 			{
@@ -782,7 +823,15 @@ int main()
 				normalShader.setMat4("projection", projection);
 				normalShader.setMat4("view", view);
 				normalShader.setMat4("model", sphere_model);
-				normalShader.setVec4("color", glm::vec4(sphereColor[0], sphereColor[1], sphereColor[2], sphereColor[3]));
+				glm::vec4 finalSphereColor;
+				if (bLooked == true) {
+					finalSphereColor = glm::vec4(sphereColor[2], sphereColor[1], sphereColor[0], sphereColor[3]);
+				}
+				else {
+					finalSphereColor = glm::vec4(sphereColor[0], sphereColor[1], sphereColor[2], sphereColor[3]);
+				}
+				
+				normalShader.setVec4("color", finalSphereColor);
 				sphere.Draw(normalShader);
 				spherePositions[i] = sphere_model * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	//			glDisable(GL_BLEND);
@@ -795,19 +844,7 @@ int main()
 		//cout << "p1 pupilposition: " << glm::to_string(pupilPositions[0]) << ", gazeEnds: " << glm::to_string(gazeEnds[0]) << endl;
 		//cout << "p2 headposition: " << glm::to_string(spherePositions[1]) << endl;
 
-		//p2 relate to p1
-		auto U = glm::normalize(glm::vec3(gazeEnds[0] - pupilPositions[0]));
-
-		auto Q = glm::vec3(pupilPositions[0] - spherePositions[1]);
-		auto b = 2.0f * glm::dot(U,Q);
-		auto c = glm::dot(Q, Q) - sphere_scale * sphere_scale;
-		auto d = b * b - 4.0f * c;
-
-		cout << d << ", ";
-		if (d >= 0)
-			cout << "Looking!!" << endl;
-		else
-			cout << "Not looking" << endl;
+		
 		
 
 		//eyeAngle = glm::mat4(1.0f);
@@ -858,11 +895,11 @@ int main()
 		glDepthFunc(GL_LESS); // set depth function back to default
 
 
-		//cout <<"position"<< camera.Position[0] <<","<< camera.Position[1] << "," << camera.Position[2]<< endl;
-		//cout << "front" << camera.Front[0] << "," << camera.Front[1] << "," << camera.Front[2] << endl;
-		//cout << "up" << camera.Up[0] << "," << camera.Up[1] << "," << camera.Up[2] << endl;
-		//cout << "yaw" << camera.Yaw<<endl;
-		//cout << "pitch" << camera.Pitch << endl;
+		cout <<"position"<< camera.Position[0] <<","<< camera.Position[1] << "," << camera.Position[2]<< endl;
+		cout << "front" << camera.Front[0] << "," << camera.Front[1] << "," << camera.Front[2] << endl;
+		cout << "up" << camera.Up[0] << "," << camera.Up[1] << "," << camera.Up[2] << endl;
+		cout << "yaw" << camera.Yaw<<endl;
+		cout << "pitch" << camera.Pitch << endl;
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
 		Gui();

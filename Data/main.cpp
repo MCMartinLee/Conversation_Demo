@@ -147,8 +147,8 @@ int main()
 		//cout << allHipPositions[i].size();
 
 		//loading eye gaze
-		file = ifstream("../Conversation/Session_" + to_string(session) + "_PC_" + to_string(i + 1) + "_EyeTracker_data.txt");
-		//file = ifstream("../3people/" + date + "/Gaze/Convert/" + "Session_" + to_string(session) + "_PC_" + to_string(i + 1) + "_EyeTracker_data_gapfilled.txt");
+		// file = ifstream("../Conversation/Session_" + to_string(session) + "_PC_" + to_string(i + 1) + "_EyeTracker_data.txt");
+		file = ifstream("../3people/" + date + "/Gaze/Convert/" + "Session_" + to_string(session) + "_PC_" + to_string(i + 1) + "_EyeTracker_data_gapfilled.txt");
 		str.clear();
 		string delimiter = " ";
 		vector<eye_angle> angle_temps;

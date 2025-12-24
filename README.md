@@ -13,12 +13,11 @@ Windows 10 or 11, Visual Studio 2015, 2017, 2019 or 2022.
 ```
 git clone https://github.com/genius92606/Conversation_Demo.git
 ```
-- Download the [release](releases/tag/v1.0.0) and extract it, then move `Release\Conversation' and 'Release\Resources' to the repo.
+- Download the [release](https://github.com/USERNAME/REPO/releases/latest) and extract it, then move `Release\Conversation' and 'Release\Resources' to the repo.
 - Click on Demo.sln and start the project.
 
-
 ## Execution
-Download the [release](releases/tag/v1.0.0) and extract it, then launch `Release/Release/Demo.exe`
+Download the [release](https://github.com/USERNAME/REPO/releases/latest) and extract it, then launch `Release/Release/Demo.exe`
 
 # Screenshot
 
